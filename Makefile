@@ -31,7 +31,14 @@ test_mmanager: $(LIB_NAME)
 # Test target to run the linked list test program
 test_list: $(LIB_NAME) linked_list.o
 	$(CC) -o test_linked_list linked_list.c test_linked_list.c -L. -lmemory_manager -lm
-	
+
+# Ensure linked_list.o and test_linked_list.o are built properly
+linked_list.o: linked_list.c
+	$(CC) $(CFLAGS) -c linked_list.c
+
+test_linked_list.o: test_linked_list.c
+	$(CC) $(CFLAGS) -c test_linked_list.c
+
 #run tests
 run_tests: run_test_mmanager run_test_list
 	
