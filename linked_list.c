@@ -64,9 +64,6 @@ void list_insert(Node** head, uint16_t data){
  * - If `prev_node` is `NULL`, the function does nothing.
  */
 void list_insert_after(Node* prev_node, uint16_t data){
-  if (prev_node == NULL){
-    return;
-  }
   pthread_mutex_lock(&list_mutex);
   
   Node* node = (Node*) mem_alloc(sizeof(Node));
@@ -91,9 +88,6 @@ void list_insert_after(Node* prev_node, uint16_t data){
  * - Otherwise, the new node is inserted before the given `next_node`.
  */
 void list_insert_before(Node** head, Node* next_node, uint16_t data){
-  if (head == NULL){
-    return;
-  }
   pthread_mutex_lock(&list_mutex);
   
   Node* node = (Node*) mem_alloc(sizeof(Node));
@@ -127,9 +121,6 @@ void list_insert_before(Node** head, Node* next_node, uint16_t data){
  * - If the node is not found, the function does nothing.
  */
 void list_delete(Node** head, uint16_t data){
-  if (head == NULL){
-    return;
-  }
   pthread_mutex_lock(&list_mutex);
   
   Node* current = *head;
@@ -166,9 +157,6 @@ void list_delete(Node** head, uint16_t data){
  * - If the node is found, it is returned; otherwise, the function returns `0`.
  */
 Node* list_search(Node** head, uint16_t data){
-  if (head == NULL){
-    return 0;
-  }
   pthread_mutex_lock(&list_mutex);
   
   Node* current = *head;
@@ -198,9 +186,6 @@ Node* list_search(Node** head, uint16_t data){
  * - If `start_node` is `NULL`, the function starts from the head of the list.
  */
 void list_display_range(Node** head, Node* start_node, Node* end_node){
-  if (head == NULL){
-    return;
-  }
   pthread_mutex_lock(&list_mutex);
   
   if (start_node == NULL){
@@ -248,9 +233,6 @@ void list_display(Node** head){
  * - Traverses the linked list and counts the nodes.
  */
 int list_count_nodes(Node** head){
-  if (head == NULL){ 
-    return 0;
-  }
   pthread_mutex_lock(&list_mutex);
   
   Node* current = *head;
@@ -274,9 +256,6 @@ int list_count_nodes(Node** head){
  * - Sets the head pointer to `NULL` after the cleanup is complete.
  */
 void list_cleanup(Node** head){
-  if (head == NULL){
-    return;
-  }
   pthread_mutex_lock(&list_mutex);
   
   Node* current = *head;
