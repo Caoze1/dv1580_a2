@@ -111,10 +111,6 @@ void* mem_alloc(size_t size){
 
 
 void no_lock_free(void* block){
-    if (block == NULL){
-        return;
-    };
-    
     struct memory_block* current = first_block;
     
     while (current != NULL){
@@ -162,10 +158,6 @@ void mem_free(void* block){
  * - The old block is freed after the data is copied.
  */
 void* mem_resize(void* block, size_t size){
-    if (block == NULL){
-        return no_lock_alloc(size);
-    };
-
     pthread_mutex_lock(&memory_mutex);
 
     struct memory_block* current_block = first_block;

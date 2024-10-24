@@ -642,6 +642,7 @@ void test_repeated_fit_reuse_multithread(TestParams params)
     // Launch threads to perform the repeated reuse test
     for (int i = 0; i < params.num_threads; i++)
     {
+        if (i == 100) printf("now");
         if (pthread_create(&threads[i], NULL, thread_repeated_fit_reuse, &params_t[i]) != 0)
         {
             perror("Failed to create thread");
