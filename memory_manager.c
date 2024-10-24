@@ -61,7 +61,6 @@ struct memory_block* make_block(void* ptr, size_t size, int free, struct memory_
  */
 void mem_init(size_t size){
     memory_pool = malloc(size); // Allocate memory pool
-
     first_block = make_block(memory_pool, size, 1, NULL); // Make header for first block pointing to the pool
 }
 
@@ -112,8 +111,10 @@ void* mem_alloc(size_t size){
 
 void no_lock_free(void* block){
     struct memory_block* current = first_block;
-    
+    struct memory_block* prev = NULL;
+
     while (current != NULL){
+        
         if (current->ptr == block){
             current->free = 1;
             if (current->next != NULL && current->next->free == 1){
@@ -122,8 +123,14 @@ void no_lock_free(void* block){
                 current->size += next->size;
                 free(next);
             }
+            if (prev != NULL && prev->free == 1){
+                prev->next = current->next;
+                prev->size += current->size;
+                free(current);
+            }
             return;
         }
+        prev = current;
         current = current->next;
     }
 }
