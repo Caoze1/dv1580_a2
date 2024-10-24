@@ -267,5 +267,6 @@ void list_cleanup(Node** head){
     current = next;
   }
   *head = NULL;
+  mem_deinit();
   pthread_mutex_unlock(&list_mutex);
 };
