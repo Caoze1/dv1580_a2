@@ -47,7 +47,7 @@ struct memory_block* make_block(void* ptr, size_t size, int free, struct memory_
     *new_block = (struct memory_block){ptr, size, free, next};
 
     return new_block;
-};
+}
 
 
 /**
@@ -63,7 +63,7 @@ void mem_init(size_t size){
     memory_pool = malloc(size); // Allocate memory pool
 
     first_block = make_block(memory_pool, size, 1, NULL); // Make header for first block pointing to the pool
-};
+}
 
 
 /**
@@ -107,7 +107,7 @@ void* mem_alloc(size_t size){
     void* ptr = no_lock_alloc(size);
     pthread_mutex_unlock(&memory_mutex);
     return ptr;
-};
+}
 
 
 void no_lock_free(void* block){
@@ -142,7 +142,7 @@ void mem_free(void* block){
     pthread_mutex_lock(&memory_mutex);
     no_lock_free(block);
     pthread_mutex_unlock(&memory_mutex);
-};
+}
 
 
 /**
@@ -184,7 +184,7 @@ void* mem_resize(void* block, size_t size){
 
     pthread_mutex_unlock(&memory_mutex);
     return new_ptr;
-};
+}
 
 
 /**
@@ -196,6 +196,14 @@ void* mem_resize(void* block, size_t size){
  */
 void mem_deinit(){
     pthread_mutex_lock(&memory_mutex);
+
+    struct memory_block* current = first_block;
+    while (current != NULL) {
+        struct memory_block* next = current->next;
+        free(current); // Free the current block
+        current = next; // Move to the next block
+    };
+
     free(memory_pool);
     memory_pool = NULL;
     first_block = NULL;
