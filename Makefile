@@ -8,7 +8,7 @@ SRC = memory_manager.c
 OBJ = $(SRC:.c=.o)
 
 # Default target
-all: mmanager list test_mmanager test_list test_listCG
+all: mmanager list test_mmanager test_list
 
 # Rule to create the dynamic library
 $(LIB_NAME): $(OBJ)
@@ -32,12 +32,8 @@ test_mmanager: $(LIB_NAME)
 test_list: $(LIB_NAME) linked_list.o
 	$(CC) -o test_linked_list linked_list.c test_linked_list.c -L. -lmemory_manager -Wl,-rpath=. -lpthread -lm
 
-# Additional target for test_linked_listCG
-test_listCG: $(LIB_NAME) linked_list.o
-	$(CC) -o test_linked_listCG linked_list.c test_linked_list.c -L. -lmemory_manager -Wl,-rpath=. -lpthread -lm
-	
 #run tests
-run_tests: run_test_mmanager run_test_list run_test_listCG
+run_tests: run_test_mmanager run_test_list 
 	
 # run test cases for the memory manager
 run_test_mmanager:
@@ -47,10 +43,6 @@ run_test_mmanager:
 run_test_list:
 	./test_linked_list
 
-# run test cases for the linked listCG version
-run_test_listCG:
-	./test_linked_listCG
-
 # Clean target to clean up build files
 clean:
-	rm -f $(OBJ) $(LIB_NAME) test_memory_manager test_linked_list test_linked_listCG linked_list.o
+	rm -f $(OBJ) $(LIB_NAME) test_memory_manager test_linked_list linked_list.o
